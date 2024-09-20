@@ -1,10 +1,13 @@
 #include <iostream>
+#include <cstdlib>
+#include <stdexcept>
 
-#include "HelloTriangleApplication.hpp"
+#include "FirstApp.hpp"
 
 int main() {
-  HelloTriangleApplication app;
-
+  
+  vesta::FirstApp app{};
+  
   try {
     app.run();
   } catch (const std::exception& e) {

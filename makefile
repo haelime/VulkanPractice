@@ -21,6 +21,10 @@ LIBS = -L"$(VULKAN_SDK)/macOS/lib" \
 
 # Source files
 SRCS = ./src/main.cpp \
+       ./src/FirstApp.cpp \
+       ./src/VestaWindow.cpp \
+       ./src/VestaPipeline.cpp \
+       ./src/VestaDevice.cpp \
        ./src/HelloTriangleApplication.cpp \
 
 OBJS = $(SRCS:.cpp=.o)
@@ -29,10 +33,11 @@ OBJS = $(SRCS:.cpp=.o)
 TARGET = ./build/scop
 
 # Shader files
-VERT_SHADER = shader/shader.vert
-FRAG_SHADER = shader/shader.frag
-VERT_SPV = shader/vert.spv
-FRAG_SPV = shader/frag.spv
+# every .vert and .frag file in the shader directory
+VERT_SHADER = $(wildcard ./shader/*.vert)
+FRAG_SHADER = $(wildcard ./shader/*.frag)
+VERT_SPV = $(VERT_SHADER:.vert=.vert.spv)
+FRAG_SPV = $(FRAG_SHADER:.frag=.frag.spv)
 GLSLC = $(VULKAN_SDK)/macOS/bin/glslc
 
 # Debug flags

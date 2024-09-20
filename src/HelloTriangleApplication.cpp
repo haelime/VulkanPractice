@@ -773,8 +773,7 @@ std::vector<char> HelloTriangleApplication::readFile(const std::string& filename
 
     VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo{};
     if (enableValidationLayers) {
-      createInfo.enabledLayerCount =
-          static_cast<uint32_t>(validationLayers.size());
+      createInfo.enabledLayerCount = static_cast<uint32_t>(validationLayers.size());
       createInfo.ppEnabledLayerNames = validationLayers.data();
 
       populateDebugMessengerCreateInfo(debugCreateInfo);

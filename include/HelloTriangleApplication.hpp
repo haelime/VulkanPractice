@@ -88,50 +88,34 @@ class HelloTriangleApplication {
   VkFence inFlightFence;
 
   void initWindow();
-
   void initVulkan();
-
   void createSyncObjects();
-
   void recordCommandBuffer(VkCommandBuffer commandBuffer, uint32_t imageIndex);
-
   void createCommandBuffer();
-
   void createCommandPool();
-
   void createFramebuffers();
   void createRenderPass();
 
   VkShaderModule createShaderModule(const std::vector<char>& code);
-
   static std::vector<char> readFile(const std::string& filename);
-
   void createGraphicsPipeline();
-
   void createImageViews();
-
   void createSwapChain();
-
   void createSurface();
   void createLogicalDevice();
 
   void pickPhysicalDevice();
   // 추가: 장치의 적합성을 검사하는 함수
   bool isDeviceSuitable(VkPhysicalDevice device);
-
   bool checkDeviceExtensionSupport(VkPhysicalDevice device);
-
   void mainLoop();
-
   void drawFrame();
-
   void cleanup();
 
   void createInstance();
   void setupDebugMessenger();
   // 디버그 메신저 생성 정보 설정 함수
-  void populateDebugMessengerCreateInfo(
-      VkDebugUtilsMessengerCreateInfoEXT& createInfo);
+  void populateDebugMessengerCreateInfo(VkDebugUtilsMessengerCreateInfoEXT& createInfo);
 
   std::vector<const char*> getRequiredExtensions();
 
@@ -139,19 +123,14 @@ class HelloTriangleApplication {
   bool checkValidationLayerSupport();
   // 디버그 콜백 함수
   static VKAPI_ATTR VkBool32 VKAPI_CALL
-  debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity,
-                VkDebugUtilsMessageTypeFlagsEXT messageType,
-                const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData,
-                void* pUserData);
+  debugCallback(VkDebugUtilsMessageSeverityFlagBitsEXT messageSeverity, VkDebugUtilsMessageTypeFlagsEXT messageType, const VkDebugUtilsMessengerCallbackDataEXT* pCallbackData, void* pUserData);
 
   QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
 
   SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device);
-  VkSurfaceFormatKHR chooseSwapSurfaceFormat(
-      const std::vector<VkSurfaceFormatKHR>& availableFormats);
+  VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
 
-  VkPresentModeKHR chooseSwapPresentMode(
-      const std::vector<VkPresentModeKHR>& availablePresentModes);
+  VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
 
   VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
 };
