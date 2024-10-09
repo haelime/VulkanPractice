@@ -8,13 +8,14 @@
 #include <algorithm>  // Necessary for std::clamp
 #include <cstdint>    // Necessary for uint32_t
 #include <fstream>
-#include <glm/mat4x4.hpp>
-#include <glm/vec4.hpp>
+#include <cstring>
 #include <iostream>
 #include <vector>
 #include <limits>  // Necessary for std::numeric_limits
 #include <optional>
 #include <set>
+#include <glm/mat4x4.hpp>
+#include <glm/vec4.hpp>
 
 const std::vector<const char*> validationLayers = {
     "VK_LAYER_KHRONOS_validation"};

@@ -3,6 +3,7 @@
 #include "VestaWindow.hpp"
 #include "VestaPipeline.hpp"
 #include "VestaDevice.hpp"
+#include "VestaSwapChain.hpp"
 
 namespace vesta {
 

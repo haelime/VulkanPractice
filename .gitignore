@@ -2,6 +2,8 @@
 *.dSYM
 *.spv
 *.o
+build
 ./build/*
 scop
 .DS_Store
+.env

@@ -10,7 +10,6 @@ namespace vesta {
 struct PipelineConfigInfo {
     VkViewport                              viewport;
     VkRect2D                                scissor;
-    VkPipelineViewportStateCreateInfo       viewPortInfo;
     VkPipelineInputAssemblyStateCreateInfo  inputAssemblyInfo;
     VkPipelineRasterizationStateCreateInfo  rasterizationInfo;
     VkPipelineMultisampleStateCreateInfo    multisampleInfo;

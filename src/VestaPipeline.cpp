@@ -71,13 +71,20 @@ namespace vesta {
         vertexInputInfo.pVertexAttributeDescriptions = nullptr;
         vertexInputInfo.pVertexBindingDescriptions = nullptr;
 
+        VkPipelineViewportStateCreateInfo viewPortInfo{};
+        viewPortInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
+        viewPortInfo.viewportCount = 1;
+        viewPortInfo.pViewports = &configInfo.viewport;
+        viewPortInfo.scissorCount = 1;
+        viewPortInfo.pScissors = &configInfo.scissor;
+
         VkGraphicsPipelineCreateInfo pipelineInfo;
         pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
         pipelineInfo.stageCount = 2;
         pipelineInfo.pStages = shaderStages;
         pipelineInfo.pVertexInputState = &vertexInputInfo;
         pipelineInfo.pInputAssemblyState = &configInfo.inputAssemblyInfo;
-        pipelineInfo.pViewportState = &configInfo.viewPortInfo;
+        pipelineInfo.pViewportState = &viewPortInfo;
         pipelineInfo.pRasterizationState = &configInfo.rasterizationInfo;
         pipelineInfo.pMultisampleState = &configInfo.multisampleInfo;
         pipelineInfo.pColorBlendState = &configInfo.colorBlendInfo;
@@ -128,12 +135,6 @@ namespace vesta {
 
         configInfo.scissor.offset = { 0,0 };
         configInfo.scissor.extent = { width, height };
-
-        configInfo.viewPortInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
-        configInfo.viewPortInfo.viewportCount = 1;
-        configInfo.viewPortInfo.pViewports = &configInfo.viewport;
-        configInfo.viewPortInfo.scissorCount = 1;
-        configInfo.viewPortInfo.pScissors = &configInfo.scissor;
 
         configInfo.rasterizationInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
         configInfo.rasterizationInfo.depthClampEnable = VK_FALSE;

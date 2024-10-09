@@ -1,9 +1,11 @@
 #pragma once
 
+#include <string>
+#include <stdexcept>
+
 #define GLFW_INCLUDE_VULKAN
 #include <GLFW/glfw3.h>
 
-#include <string>
 
 namespace vesta {
 
@@ -17,6 +19,7 @@ public:
     VestaWindow &operator=(const VestaWindow &) = delete;
 
     bool shouldClose() { return glfwWindowShouldClose(window); }
+    VkExtent2D getExtent() { return { static_cast<uint32_t>(width), static_cast<uint32_t>(height) }; } 
 
     // what the hell is KHR
     void createWindowSurface( VkInstance instance, VkSurfaceKHR *surface );
