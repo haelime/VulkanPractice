@@ -17,7 +17,9 @@ ifeq ($(UNAME), Darwin) # macOS
     LIBS = -L"$(VULKAN_SDK_PATH)/macOS/lib" \
            -L/opt/homebrew/Cellar/glfw/3.4/lib \
            -lglfw -lvulkan \
-           -framework Cocoa -framework OpenGL -framework IOKit -framework CoreVideo
+           -framework Cocoa -framework OpenGL -framework IOKit -framework CoreVideo\
+           -Wl,-rpath,$(VULKAN_SDK)/macOS/lib
+
     GLSLC = $(VULKAN_SDK_PATH)/macOS/bin/glslc
 
 else ifeq ($(UNAME), Linux) # Linux
@@ -29,12 +31,11 @@ else ifeq ($(UNAME), Linux) # Linux
            -lglfw -lvulkan -lX11 -lXxf86vm -lXrandr -lXi -ldl -lpthread -lXinerama -lXcursor
     GLSLC = $(VULKAN_SDK_PATH)/bin/glslc
 
-else ifeq ($(OS), Windows_NT) # Windows (MinGW or MSYS)
+else ifeq ($(UNAME), MINGW64_NT) # Windows (MinGW or MSYS)
     VULKAN_SDK_PATH = C:/VulkanSDK/1.3.290.0
     INCLUDES = -I"$(VULKAN_SDK_PATH)/Include" \
                -I"C:/msys64/mingw64/include" \
-               -I./include\
-               -I"C:/glfw-3.4/include"
+               -I./include
     LIBS = -L"$(VULKAN_SDK_PATH)/Lib" \
            -L"C:/msys64/mingw64/lib" \
            -lglfw3 -lvulkan-1 \
@@ -51,6 +52,7 @@ SRCS = ./src/main.cpp \
        ./src/VestaWindow.cpp \
        ./src/VestaPipeline.cpp \
        ./src/VestaDevice.cpp \
+       ./src/VestaSwapChain.cpp \
        ./src/HelloTriangleApplication.cpp
 
 OBJS = $(SRCS:.cpp=.o)
