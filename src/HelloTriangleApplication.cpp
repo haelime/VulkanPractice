@@ -414,8 +414,8 @@ std::vector<char> HelloTriangleApplication::readFile(const std::string& filename
                                   nullptr, &graphicsPipeline) != VK_SUCCESS) {
       throw std::runtime_error("failed to create graphics pipeline!");
     }
-    vkDestroyShaderModule(device, fragShaderModule, nullptr);
     vkDestroyShaderModule(device, vertShaderModule, nullptr);
+    vkDestroyShaderModule(device, fragShaderModule, nullptr);
   }
 
   void HelloTriangleApplication::createImageViews() {
