@@ -371,6 +371,9 @@ VkSurfaceFormatKHR VestaSwapChain::chooseSwapSurfaceFormat(
   return availableFormats[0];
 }
 
+// FIFO == Vsync랑 잘 맞음, 항상 지원댐, 모바일에서 보통 이거씀.
+// 메일박스 == 레이턴시낮음+ 전력효율-, 지원 안 될때도 있음.
+// 즉시 == 빠름+ 티어링- 전력효율-, 보통 지원댐
 VkPresentModeKHR VestaSwapChain::chooseSwapPresentMode(
     const std::vector<VkPresentModeKHR> &availablePresentModes) {
   for (const auto &availablePresentMode : availablePresentModes) {
@@ -414,4 +417,4 @@ VkFormat VestaSwapChain::findDepthFormat() {
       VK_FORMAT_FEATURE_DEPTH_STENCIL_ATTACHMENT_BIT);
 }
 
-}  // namespace lve
+}  // namespace vesta

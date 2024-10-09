@@ -1,13 +1,14 @@
 #pragma once
 
+// std lib headers
+#include <string>
+#include <vector>
+
 #include "VestaDevice.hpp"
 
 // vulkan headers
 #include <vulkan/vulkan.h>
 
-// std lib headers
-#include <string>
-#include <vector>
 
 namespace vesta {
 

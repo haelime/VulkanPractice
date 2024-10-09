@@ -19,6 +19,8 @@ namespace vesta {
         glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
         window = glfwCreateWindow(width, height, windowName.c_str(), nullptr, nullptr);
+        // glfwSetWindowUserPointer(window, this);
+        // glfwSetFramebufferSizeCallback(window, framebufferResizeCallback);
     }
 
     void VestaWindow::createWindowSurface(VkInstance instance, VkSurfaceKHR *surface) {

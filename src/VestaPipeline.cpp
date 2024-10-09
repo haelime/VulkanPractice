@@ -39,8 +39,8 @@ namespace vesta {
 
     void VestaPipeline::createGraphicsPipeline(const std::string& vertFilePath, const std::string& fragFilePath, const PipelineConfigInfo& configInfo) {
 
-        assert(configInfo.pipelineLayout != VK_NULL_HANDLE && "Cannot create Graphics pipeline:: no pipelineLayout provided in configInfo");
-        assert(configInfo.renderPass != VK_NULL_HANDLE && "Cannot create renderPass:: no pipelineLayout provided in configInfo");
+        // assert(configInfo.pipelineLayout != VK_NULL_HANDLE && "Cannot create Graphics pipeline:: no pipelineLayout provided in configInfo");
+        // assert(configInfo.renderPass != VK_NULL_HANDLE && "Cannot create renderPass:: no pipelineLayout provided in configInfo");
 
         auto vertCode = readFile(vertFilePath);
         auto fragCode = readFile(fragFilePath);
@@ -71,25 +71,34 @@ namespace vesta {
         vertexInputInfo.pVertexAttributeDescriptions = nullptr;
         vertexInputInfo.pVertexBindingDescriptions = nullptr;
 
-        VkPipelineViewportStateCreateInfo viewPortInfo{};
-        viewPortInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
-        viewPortInfo.viewportCount = 1;
-        viewPortInfo.pViewports = &configInfo.viewport;
-        viewPortInfo.scissorCount = 1;
-        viewPortInfo.pScissors = &configInfo.scissor;
+        VkPipelineViewportStateCreateInfo viewportInfo{};
+        viewportInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
+        viewportInfo.viewportCount = 1;
+        viewportInfo.pViewports = &configInfo.viewport;
+        viewportInfo.scissorCount = 1;
+        viewportInfo.pScissors = &configInfo.scissor;
 
-        VkGraphicsPipelineCreateInfo pipelineInfo;
+        std::vector<VkDynamicState> dynamicStates = { VK_DYNAMIC_STATE_VIEWPORT,
+                                                 VK_DYNAMIC_STATE_SCISSOR };
+
+        VkPipelineDynamicStateCreateInfo dynamicState{};
+        dynamicState.sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
+        dynamicState.dynamicStateCount =
+            static_cast<uint32_t>(dynamicStates.size());
+        dynamicState.pDynamicStates = dynamicStates.data();
+
+        VkGraphicsPipelineCreateInfo pipelineInfo {};
         pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
         pipelineInfo.stageCount = 2;
         pipelineInfo.pStages = shaderStages;
         pipelineInfo.pVertexInputState = &vertexInputInfo;
         pipelineInfo.pInputAssemblyState = &configInfo.inputAssemblyInfo;
-        pipelineInfo.pViewportState = &viewPortInfo;
+        pipelineInfo.pViewportState = &viewportInfo;
         pipelineInfo.pRasterizationState = &configInfo.rasterizationInfo;
         pipelineInfo.pMultisampleState = &configInfo.multisampleInfo;
         pipelineInfo.pColorBlendState = &configInfo.colorBlendInfo;
         pipelineInfo.pDepthStencilState = &configInfo.depthStencilInfo;
-        pipelineInfo.pDynamicState = nullptr;
+        pipelineInfo.pDynamicState = &dynamicState;
 
         pipelineInfo.layout = configInfo.pipelineLayout;
         pipelineInfo.renderPass = configInfo.renderPass;
@@ -102,8 +111,6 @@ namespace vesta {
         if (vkCreateGraphicsPipelines(vestaDevice.device(), VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &graphicsPipeline) != VK_SUCCESS) {
             throw std::runtime_error("failed to create graphics pipeline");
         }
-
-
 
     }
 
@@ -118,13 +125,16 @@ namespace vesta {
         }
     }
 
+    // void VestaPipeline::bind(VkCommandBuffer commandBuffer) {
+    //     vkCmdBindPipeline(commandBuffer, VK_PIPELINE_BIND_POINT_GRAPHICS, graphicsPipeline);
+    // }
+
     PipelineConfigInfo VestaPipeline::defaultPipelineConfigInfo(uint32_t width, uint32_t height) {
         PipelineConfigInfo configInfo{};
 
         configInfo.inputAssemblyInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_INPUT_ASSEMBLY_STATE_CREATE_INFO;
         configInfo.inputAssemblyInfo.topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
         configInfo.inputAssemblyInfo.primitiveRestartEnable = VK_FALSE;
-
 
         configInfo.viewport.x = 0.0f;
         configInfo.viewport.y = 0.0f;
@@ -133,7 +143,7 @@ namespace vesta {
         configInfo.viewport.minDepth = 0.0f;
         configInfo.viewport.maxDepth = 1.0f;
 
-        configInfo.scissor.offset = { 0,0 };
+        configInfo.scissor.offset = { 0, 0 };
         configInfo.scissor.extent = { width, height };
 
         configInfo.rasterizationInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
@@ -144,17 +154,17 @@ namespace vesta {
         configInfo.rasterizationInfo.cullMode = VK_CULL_MODE_NONE;
         configInfo.rasterizationInfo.frontFace = VK_FRONT_FACE_CLOCKWISE;
         configInfo.rasterizationInfo.depthBiasEnable = VK_FALSE;
-        configInfo.rasterizationInfo.depthBiasConstantFactor = 0.0f;
-        configInfo.rasterizationInfo.depthBiasClamp = 0.0f;
-        configInfo.rasterizationInfo.depthBiasSlopeFactor = 0.0f;
+        configInfo.rasterizationInfo.depthBiasConstantFactor = 0.0f;  // Optional
+        configInfo.rasterizationInfo.depthBiasClamp = 0.0f;           // Optional
+        configInfo.rasterizationInfo.depthBiasSlopeFactor = 0.0f;     // Optional
 
         configInfo.multisampleInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_MULTISAMPLE_STATE_CREATE_INFO;
         configInfo.multisampleInfo.sampleShadingEnable = VK_FALSE;
         configInfo.multisampleInfo.rasterizationSamples = VK_SAMPLE_COUNT_1_BIT;
-        configInfo.multisampleInfo.minSampleShading = 1.0f;
-        configInfo.multisampleInfo.pSampleMask = nullptr;
-        configInfo.multisampleInfo.alphaToCoverageEnable = VK_FALSE;
-        configInfo.multisampleInfo.alphaToOneEnable = VK_FALSE;
+        configInfo.multisampleInfo.minSampleShading = 1.0f;           // Optional
+        configInfo.multisampleInfo.pSampleMask = nullptr;             // Optional
+        configInfo.multisampleInfo.alphaToCoverageEnable = VK_FALSE;  // Optional
+        configInfo.multisampleInfo.alphaToOneEnable = VK_FALSE;       // Optional
 
         configInfo.colorBlendAttachment.colorWriteMask =
             VK_COLOR_COMPONENT_R_BIT | VK_COLOR_COMPONENT_G_BIT | VK_COLOR_COMPONENT_B_BIT |
@@ -191,6 +201,4 @@ namespace vesta {
         return configInfo;
     }
 
-
-
-}
+} // namespace vesta
